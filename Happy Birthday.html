@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for my favorite person 🤍</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:'Poppins',sans-serif;
+  background:#ffdce8;
+}
+
+/* VIDEO BACKGROUND */
+.video-bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:blur(10px) brightness(.45);
+  transform:scale(1.1);
+  z-index:-3;
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(255,192,203,.25),
+    rgba(255,182,193,.15)
+  );
+  z-index:-2;
+}
+
+/* FLOWERS */
+.flowers{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:-1;
+}
+
+.flowers span{
+  position:absolute;
+  bottom:-50px;
+  font-size:28px;
+  animation:flower 12s linear infinite;
+  opacity:.75;
+}
+
+.flowers span:nth-child(1){left:5%;animation-delay:0s;}
+.flowers span:nth-child(2){left:20%;animation-delay:2s;}
+.flowers span:nth-child(3){left:35%;animation-delay:4s;}
+.flowers span:nth-child(4){left:50%;animation-delay:1s;}
+.flowers span:nth-child(5){left:65%;animation-delay:5s;}
+.flowers span:nth-child(6){left:80%;animation-delay:3s;}
+.flowers span:nth-child(7){left:92%;animation-delay:6s;}
+
+/* FALLING FLOWERS */
+.letter-flowers{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:5;
+}
+
+.letter-flowers span{
+  position:absolute;
+  top:-50px;
+  font-size:24px;
+  animation:fallFlowers 10s linear infinite;
+  opacity:.75;
+}
+
+.letter-flowers span:nth-child(1){left:8%;animation-delay:0s;}
+.letter-flowers span:nth-child(2){left:20%;animation-delay:2s;}
+.letter-flowers span:nth-child(3){left:35%;animation-delay:4s;}
+.letter-flowers span:nth-child(4){left:50%;animation-delay:1s;}
+.letter-flowers span:nth-child(5){left:65%;animation-delay:5s;}
+.letter-flowers span:nth-child(6){left:80%;animation-delay:3s;}
+.letter-flowers span:nth-child(7){left:92%;animation-delay:6s;}
+.letter-flowers span:nth-child(8){left:45%;animation-delay:7s;}
+
+/* CONTAINER */
+.container{
+  width:100%;
+  height:100vh;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+/* SCREENS */
+.screen{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  transition:.8s;
+}
+
+.hide{
+  opacity:0;
+  transform:scale(.8);
+  pointer-events:none;
+}
+
+/* GIFT + FLOWER BOX */
+.gift-box,
+.bouquet{
+  width:170px;
+  height:170px;
+  border-radius:45px;
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(15px);
+  border:1px solid rgba(255,255,255,.25);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:95px;
+  animation:float 3s ease-in-out infinite;
+  box-shadow:0 10px 40px rgba(255,105,180,.25);
+}
+
+.title{
+  margin-top:28px;
+  font-size:clamp(30px,5vw,40px);
+  color:#000 !important;
+  font-weight:600;
+  text-shadow:0 4px 15px rgba(255,255,255,.25);
+  text-transform:lowercase;
+  text-align:center;
+}
+
+.subtitle{
+  margin-top:10px;
+  color:#000 !important;
+  font-size:16px;
+  text-align:center;
+}
+
+.btn{
+  margin-top:35px;
+  padding:14px 38px;
+  border:none;
+  border-radius:999px;
+  background:rgba(255,255,255,.18);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.3);
+  color:#000 !important;
+  font-size:16px;
+  cursor:pointer;
+  transition:.3s;
+  box-shadow:0 8px 25px rgba(0,0,0,.18);
+}
+
+.btn:hover{
+  transform:scale(1.05);
+}
+
+/* MUSIC CONTROL */
+.music-control{
+  position:absolute;
+  top:-10px;
+  right:-70px;
+  width:58px;
+  height:58px;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,.18);
+  backdrop-filter:blur(10px);
+  color:#000 !important;
+  font-size:24px;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,.25);
+  box-shadow:0 8px 20px rgba(0,0,0,.18);
+  transition:.3s;
+}
+
+.music-control:hover{
+  transform:scale(1.08);
+}
+
+/* LETTER SCREEN */
+.letter-screen{
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(40px);
+}
+
+.show{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0);
+}
+
+/* LETTER CARD */
+.letter-card{
+  width:min(92%,500px);
+  max-height:85vh;
+  overflow-y:auto;
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(15px);
+  border-radius:30px;
+  padding:30px 24px 40px;
+  color:#000 !important;
+  border:1px solid rgba(255,255,255,.4);
+  box-shadow:0 15px 45px rgba(0,0,0,.18);
+  position:relative;
+}
+
+.letter-card::-webkit-scrollbar{
+  width:4px;
+}
+
+.letter-card::-webkit-scrollbar-thumb{
+  background:#ffb6d2;
+  border-radius:10px;
+}
+
+/* FLOWER CORNERS */
+.corner-flower{
+  position:absolute;
+  font-size:26px;
+  opacity:.65;
+}
+
+.corner1{
+  top:15px;
+  left:18px;
+}
+
+.corner2{
+  top:15px;
+  right:18px;
+}
+
+.corner3{
+  bottom:15px;
+  left:18px;
+}
+
+.corner4{
+  bottom:15px;
+  right:18px;
+}
+
+/* LETTER CONTENT */
+.letter-title{
+  text-align:center;
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(36px,7vw,48px);
+  color:#000 !important;
+  margin-bottom:24px;
+}
+
+.letter-text{
+  font-size:16px;
+  line-height:2.1;
+  text-align:left;
+  word-break:break-word;
+  color:#000 !important;
+}
+
+.signature{
+  margin-top:35px;
+  text-align:center;
+  font-family:'Great Vibes',cursive;
+  font-size:32px;
+  color:#000 !important;
+}
+
+/* ANIMATION */
+@keyframes float{
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-15px);
+  }
+}
+
+@keyframes flower{
+  0%{
+    transform:translateY(0) rotate(0deg);
+    opacity:0;
+  }
+
+  10%{
+    opacity:.75;
+  }
+
+  100%{
+    transform:translateY(-120vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+@keyframes fallFlowers{
+  0%{
+    transform:translateY(-10vh) rotate(0deg);
+    opacity:0;
+  }
+
+  10%{
+    opacity:.8;
+  }
+
+  100%{
+    transform:translateY(120vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+/* RESPONSIVE */
+@media(max-width:480px){
+
+  .gift-box,
+  .bouquet{
+    width:145px;
+    height:145px;
+    font-size:80px;
+  }
+
+  .btn{
+    font-size:15px;
+    padding:13px 30px;
+  }
+
+  .letter-card{
+    width:95%;
+    max-height:82vh;
+    padding:26px 20px 35px;
+  }
+
+  .letter-text{
+    font-size:15px;
+    line-height:2;
+  }
+
+  .signature{
+    font-size:28px;
+  }
+
+  .music-control{
+    right:-55px;
+    width:52px;
+    height:52px;
+  }
+}
+</style>
+</head>
+<body>
+
+<video autoplay muted loop class="video-bg">
+  <source src="your-video.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<div class="flowers">
+  <span>🌸</span>
+  <span>🌷</span>
+  <span>💮</span>
+  <span>🌹</span>
+  <span>🌺</span>
+  <span>🌸</span>
+  <span>🌷</span>
+</div>
+
+<div class="letter-flowers">
+  <span>🌸</span>
+  <span>🌷</span>
+  <span>💮</span>
+  <span>🌹</span>
+  <span>🌺</span>
+  <span>🌸</span>
+  <span>🌷</span>
+  <span>💖</span>
+</div>
+
+<div class="container">
+
+  <div class="screen" id="screen1">
+
+    <div style="position:relative;">
+
+      <button class="music-control" onclick="toggleMusic()">
+        🎵
+      </button>
+
+      <div class="gift-box">🎁</div>
+
+    </div>
+
+    <div class="title">
+      a gift for you
+    </div>
+
+    <div class="subtitle">
+      tap to open ♡
+    </div>
+
+    <button class="btn" onclick="nextScreen1()">
+      open gift
+    </button>
+
+  </div>
+
+  <div class="screen hide" id="screen2">
+
+    <div class="bouquet">💐</div>
+
+    <div class="title">
+      flowers for u
+    </div>
+
+    <div class="subtitle">
+      one more tap 🤍
+    </div>
+
+    <button class="btn" onclick="nextScreen2()">
+      open message
+    </button>
+
+  </div>
+
+  <div class="screen letter-screen" id="screen3">
+
+    <div class="letter-card">
+
+      <div class="corner-flower corner1">🌸</div>
+      <div class="corner-flower corner2">🌷</div>
+      <div class="corner-flower corner3">💮</div>
+      <div class="corner-flower corner4">🌹</div>
+
+      <div class="letter-title">
+        Hallo Sayang 🤍
+      </div>
+
+      <div class="letter-text">
+
+        Barakallah fii umrik untuk perempuan paling istimewa di hidup mas. Terima kasih sudah menjadi alasan 
+        di balik banyak senyum dan bahagia mas. Semoga setiap doa yang sayang panjatkan satu per satu menjadi 
+        kenyataan, semoga langkah adek selalu dipenuhi kebahagiaan, kesehatan, dan orang-orang yang tulus sayang sama adek.
+        Mas mungkin belum bisa memberikan semua yang adek inginkan, tapi mas akan selalu berusaha memberikan yang terbaik untuk adek. Tetaplah menjadi Tria yang baik, kuat, dan selalu membawa hangat untuk orang-orang di sekitarnya yaa.
+        sayang adek, lebih dari yang bisa diungkapkan oleh kata-kata. Semoga hari ini menjadi awal dari tahun yang penuh cerita indah untuk sayang..<br>
+        happy birthday, sayangku 💌✨
+
+      </div>
+
+      <div class="signature">
+        — from kesayangan kamu 🤍
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="ssstik.io_1790611434666.mp3" type="audio/mp3">
+</audio>
+
+<script>
+function nextScreen1(){
+  document.getElementById('screen1').classList.add('hide');
+  document.getElementById('screen2').classList.remove('hide');
+}
+
+function nextScreen2(){
+  document.getElementById('screen2').classList.add('hide');
+  document.getElementById('screen3').classList.add('show');
+}
+
+function toggleMusic(){
+  const music = document.getElementById('bgMusic');
+
+  if(music.paused){
+    music.play();
+  }else{
+    music.pause();
+  }
+}
+</script>
+
+</body>
+</html>
